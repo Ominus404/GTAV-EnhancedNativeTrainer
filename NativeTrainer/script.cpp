@@ -444,7 +444,7 @@ int teleportActiveLineIndex = 0;
 bool process_teleport_menu()
 {
 	const float lineWidth = 250.0;
-	const int lineCount	= 17;
+	const int lineCount	= 18;
 
 	std::string caption = "TELEPORT";
 
@@ -470,7 +470,8 @@ bool process_teleport_menu()
 			{ "MILITARY BASE", -2047.4f, 3132.1f, 32.8f },
 			{ "MCKENZIE AIRFIELD", 2121.7f, 4796.3f, 41.1f },
 			{ "DESERT AIRFIELD", 1747.0f, 3273.7f, 41.1f },
-			{ "CHILLIAD", 425.4f, 5614.3f, 766.5f }
+			{ "CHILLIAD", 425.4f, 5614.3f, 766.5f },
+			{ "NORTH YANKTON", 3360.19f, -4849.67f, 111.8f }
 	};
 
 	DWORD waitTime = 150;
@@ -1202,6 +1203,308 @@ void process_weather_menu()
 
 int activeLineIndexMisc = 0;
 
+void process_loc_menu()
+{
+	const float lineWidth = 250.0;
+	const int lineCount = 5;
+
+	std::string caption = "LOAD IPLS";
+
+	static struct {
+		LPCSTR		text;
+		bool		*pState;
+		bool		*pUpdated;
+	} lines[lineCount] = {
+			{ "NORTH YANKTON", NULL, NULL },
+			{ "CARGO SHIP", NULL, NULL },
+			{ "TREVORS TRAILER", NULL, NULL },
+			{ "PARTY YACHT", NULL, NULL },
+			{ "RED CARPET", NULL, NULL }
+	};
+
+
+	DWORD waitTime = 150;
+	while (true)
+	{
+		// timed menu draw, used for pause after active line switch
+		DWORD maxTickCount = GetTickCount() + waitTime;
+		do
+		{
+			// draw menu
+			draw_menu_line(caption, lineWidth, 15.0, 18.0, 0.0, 5.0, false, true);
+			for (int i = 0; i < lineCount; i++)
+				if (i != activeLineIndexMisc)
+					draw_menu_line(line_as_str(lines[i].text, lines[i].pState),
+					lineWidth, 9.0, 60.0 + i * 36.0, 0.0, 9.0, false, false);
+			draw_menu_line(line_as_str(lines[activeLineIndexMisc].text, lines[activeLineIndexMisc].pState),
+				lineWidth + 1.0, 11.0, 56.0 + activeLineIndexMisc * 36.0, 0.0, 7.0, true, false);
+
+			update_features();
+			WAIT(0);
+		} while (GetTickCount() < maxTickCount);
+		waitTime = 0;
+
+		// process buttons
+		bool bSelect, bBack, bUp, bDown;
+		get_button_state(&bSelect, &bBack, &bUp, &bDown, NULL, NULL);
+		if (bSelect)
+		{
+			menu_beep();
+			switch (activeLineIndexMisc)
+			{
+				// Load North Yankton
+			case 0:
+			{
+				if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("plg_01") == 0))
+				{
+					STREAMING::REQUEST_IPL("plg_01");
+					STREAMING::REQUEST_IPL("prologue01");
+					STREAMING::REQUEST_IPL("prologue01_lod");
+					STREAMING::REQUEST_IPL("prologue01c");
+					STREAMING::REQUEST_IPL("prologue01c_lod");
+					STREAMING::REQUEST_IPL("prologue01d");
+					STREAMING::REQUEST_IPL("prologue01d_lod");
+					STREAMING::REQUEST_IPL("prologue01e");
+					STREAMING::REQUEST_IPL("prologue01e_lod");
+					STREAMING::REQUEST_IPL("prologue01f");
+					STREAMING::REQUEST_IPL("prologue01f_lod");
+					STREAMING::REQUEST_IPL("prologue01g");
+					STREAMING::REQUEST_IPL("prologue01h");
+					STREAMING::REQUEST_IPL("prologue01h_lod");
+					STREAMING::REQUEST_IPL("prologue01i");
+					STREAMING::REQUEST_IPL("prologue01i_lod");
+					STREAMING::REQUEST_IPL("prologue01j");
+					STREAMING::REQUEST_IPL("prologue01j_lod");
+					STREAMING::REQUEST_IPL("prologue01k");
+					STREAMING::REQUEST_IPL("prologue01k_lod");
+					STREAMING::REQUEST_IPL("prologue01z");
+					STREAMING::REQUEST_IPL("prologue01z_lod");
+					STREAMING::REQUEST_IPL("plg_02");
+					STREAMING::REQUEST_IPL("prologue02");
+					STREAMING::REQUEST_IPL("prologue02_lod");
+					STREAMING::REQUEST_IPL("plg_03");
+					STREAMING::REQUEST_IPL("prologue03");
+					STREAMING::REQUEST_IPL("prologue03_lod");
+					STREAMING::REQUEST_IPL("prologue03b");
+					STREAMING::REQUEST_IPL("prologue03b_lod");
+					//the commented code disables the 'Prologue' grave and
+					//enables the 'Bury the Hatchet' grave
+					//STREAMING::REQUEST_IPL("prologue03_grv_cov");
+					//STREAMING::REQUEST_IPL("prologue03_grv_cov_lod");
+					STREAMING::REQUEST_IPL("prologue03_grv_dug");
+					STREAMING::REQUEST_IPL("prologue03_grv_dug_lod");
+					//STREAMING::REQUEST_IPL("prologue03_grv_fun");
+					STREAMING::REQUEST_IPL("prologue_grv_torch");
+					STREAMING::REQUEST_IPL("plg_04");
+					STREAMING::REQUEST_IPL("prologue04");
+					STREAMING::REQUEST_IPL("prologue04_lod");
+					STREAMING::REQUEST_IPL("prologue04b");
+					STREAMING::REQUEST_IPL("prologue04b_lod");
+					STREAMING::REQUEST_IPL("prologue04_cover");
+					STREAMING::REQUEST_IPL("des_protree_end");
+					STREAMING::REQUEST_IPL("des_protree_start");
+					STREAMING::REQUEST_IPL("des_protree_start_lod");
+					STREAMING::REQUEST_IPL("plg_05");
+					STREAMING::REQUEST_IPL("prologue05");
+					STREAMING::REQUEST_IPL("prologue05_lod");
+					STREAMING::REQUEST_IPL("prologue05b");
+					STREAMING::REQUEST_IPL("prologue05b_lod");
+					STREAMING::REQUEST_IPL("plg_06");
+					STREAMING::REQUEST_IPL("prologue06");
+					STREAMING::REQUEST_IPL("prologue06_lod");
+					STREAMING::REQUEST_IPL("prologue06b");
+					STREAMING::REQUEST_IPL("prologue06b_lod");
+					STREAMING::REQUEST_IPL("prologue06_int");
+					STREAMING::REQUEST_IPL("prologue06_int_lod");
+					STREAMING::REQUEST_IPL("prologue06_pannel");
+					STREAMING::REQUEST_IPL("prologue06_pannel_lod");
+					//STREAMING::REQUEST_IPL("prologue_m2_door");
+					//STREAMING::REQUEST_IPL("prologue_m2_door_lod");
+					STREAMING::REQUEST_IPL("plg_occl_00");
+					STREAMING::REQUEST_IPL("prologue_occl");
+					STREAMING::REQUEST_IPL("plg_rd");
+					STREAMING::REQUEST_IPL("prologuerd");
+					STREAMING::REQUEST_IPL("prologuerdb");
+					STREAMING::REQUEST_IPL("prologuerd_lod");
+					set_status_text("NORTH YANKTON LOADED");
+				}
+				else if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("plg_01") == 1))
+				{
+					STREAMING::REMOVE_IPL("plg_01");
+					STREAMING::REMOVE_IPL("prologue01");
+					STREAMING::REMOVE_IPL("prologue01_lod");
+					STREAMING::REMOVE_IPL("prologue01c");
+					STREAMING::REMOVE_IPL("prologue01c_lod");
+					STREAMING::REMOVE_IPL("prologue01d");
+					STREAMING::REMOVE_IPL("prologue01d_lod");
+					STREAMING::REMOVE_IPL("prologue01e");
+					STREAMING::REMOVE_IPL("prologue01e_lod");
+					STREAMING::REMOVE_IPL("prologue01f");
+					STREAMING::REMOVE_IPL("prologue01f_lod");
+					STREAMING::REMOVE_IPL("prologue01g");
+					STREAMING::REMOVE_IPL("prologue01h");
+					STREAMING::REMOVE_IPL("prologue01h_lod");
+					STREAMING::REMOVE_IPL("prologue01i");
+					STREAMING::REMOVE_IPL("prologue01i_lod");
+					STREAMING::REMOVE_IPL("prologue01j");
+					STREAMING::REMOVE_IPL("prologue01j_lod");
+					STREAMING::REMOVE_IPL("prologue01k");
+					STREAMING::REMOVE_IPL("prologue01k_lod");
+					STREAMING::REMOVE_IPL("prologue01z");
+					STREAMING::REMOVE_IPL("prologue01z_lod");
+					STREAMING::REMOVE_IPL("plg_02");
+					STREAMING::REMOVE_IPL("prologue02");
+					STREAMING::REMOVE_IPL("prologue02_lod");
+					STREAMING::REMOVE_IPL("plg_03");
+					STREAMING::REMOVE_IPL("prologue03");
+					STREAMING::REMOVE_IPL("prologue03_lod");
+					STREAMING::REMOVE_IPL("prologue03b");
+					STREAMING::REMOVE_IPL("prologue03b_lod");
+					//the commented code disables the 'Prologue' grave and
+					//enables the 'Bury the Hatchet' grave
+					//STREAMING::REMOVE_IPL("prologue03_grv_cov");
+					//STREAMING::REMOVE_IPL("prologue03_grv_cov_lod");
+					STREAMING::REMOVE_IPL("prologue03_grv_dug");
+					STREAMING::REMOVE_IPL("prologue03_grv_dug_lod");
+					//STREAMING::REMOVE_IPL("prologue03_grv_fun");
+					STREAMING::REMOVE_IPL("prologue_grv_torch");
+					STREAMING::REMOVE_IPL("plg_04");
+					STREAMING::REMOVE_IPL("prologue04");
+					STREAMING::REMOVE_IPL("prologue04_lod");
+					STREAMING::REMOVE_IPL("prologue04b");
+					STREAMING::REMOVE_IPL("prologue04b_lod");
+					STREAMING::REMOVE_IPL("prologue04_cover");
+					STREAMING::REMOVE_IPL("des_protree_end");
+					STREAMING::REMOVE_IPL("des_protree_start");
+					STREAMING::REMOVE_IPL("des_protree_start_lod");
+					STREAMING::REMOVE_IPL("plg_05");
+					STREAMING::REMOVE_IPL("prologue05");
+					STREAMING::REMOVE_IPL("prologue05_lod");
+					STREAMING::REMOVE_IPL("prologue05b");
+					STREAMING::REMOVE_IPL("prologue05b_lod");
+					STREAMING::REMOVE_IPL("plg_06");
+					STREAMING::REMOVE_IPL("prologue06");
+					STREAMING::REMOVE_IPL("prologue06_lod");
+					STREAMING::REMOVE_IPL("prologue06b");
+					STREAMING::REMOVE_IPL("prologue06b_lod");
+					STREAMING::REMOVE_IPL("prologue06_int");
+					STREAMING::REMOVE_IPL("prologue06_int_lod");
+					STREAMING::REMOVE_IPL("prologue06_pannel");
+					STREAMING::REMOVE_IPL("prologue06_pannel_lod");
+					//STREAMING::REMOVE_IPL("prologue_m2_door");
+					//STREAMING::REMOVE_IPL("prologue_m2_door_lod");
+					STREAMING::REMOVE_IPL("plg_occl_00");
+					STREAMING::REMOVE_IPL("prologue_occl");
+					STREAMING::REMOVE_IPL("plg_rd");
+					STREAMING::REMOVE_IPL("prologuerd");
+					STREAMING::REMOVE_IPL("prologuerdb");
+					STREAMING::REMOVE_IPL("prologuerd_lod");
+					set_status_text("NORTH YANKTON REMOVED");
+				}
+				break;;
+			}
+			case 1:
+			{
+				if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("cargoShip") == 1))
+				{
+					STREAMING::REMOVE_IPL("cargoShip");
+					STREAMING::REQUEST_IPL("sunkcargoship");
+					set_status_text("SUNK CARGO SHIP LOADED");
+				}
+				else if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("cargoShip") == 0))
+				{
+					STREAMING::REMOVE_IPL("sunkcargoship");
+					STREAMING::REQUEST_IPL("cargoShip");
+					set_status_text("CARGO SHIP LOADED");
+				}
+				break;;
+			}
+			case 2:
+			{
+				if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("TrevorsTrailer") == 1))
+				{
+					STREAMING::REMOVE_IPL("TrevorsTrailer");
+					STREAMING::REQUEST_IPL("TrevorsTrailerTrash");
+					set_status_text("TREVORS TRASHED TRAILER LOADED");
+				}
+				else if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("TrevorsTrailerTrash") == 1))
+				{
+					STREAMING::REMOVE_IPL("TrevorsTrailerTrash");
+					STREAMING::REQUEST_IPL("TrevorsTrailerTidy");
+					set_status_text("TREVORS TIDY TRAILER LOADED");
+				}
+				else if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("TrevorsTrailerTidy") == 1))
+				{
+					STREAMING::REMOVE_IPL("TrevorsTrailerTidy");
+					STREAMING::REQUEST_IPL("TrevorsTrailer");
+					set_status_text("TREVORS TRAILER LOADED");
+				}
+				break;;
+			}
+			case 3:
+			{
+				if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("smboat") == 0))
+				{
+					STREAMING::REQUEST_IPL("smboat");
+					set_status_text("PARTY YACHT LOADED");
+				}
+				else if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("smboat") == 1))
+				{
+					STREAMING::REMOVE_IPL("smboat");
+					set_status_text("PARTY YACHT REMOVED");
+				}
+				break;;
+			}
+			case 4:
+			{
+				if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("redCarpet") == 0))
+				{
+					STREAMING::REQUEST_IPL("redCarpet");
+					set_status_text("RED CARPET LOADED");
+				}
+				else if ((ENTITY::DOES_ENTITY_EXIST(PLAYER::PLAYER_PED_ID())) && (STREAMING::IS_IPL_ACTIVE("redCarpet") == 1))
+				{
+					STREAMING::REMOVE_IPL("redCarpet");
+					set_status_text("RED CARPET REMOVED");
+				}
+				break;;
+			}
+				// switchable features
+			default:
+				if (lines[activeLineIndexMisc].pState)
+					*lines[activeLineIndexMisc].pState = !(*lines[activeLineIndexMisc].pState);
+				if (lines[activeLineIndexMisc].pUpdated)
+					*lines[activeLineIndexMisc].pUpdated = true;
+			}
+			waitTime = 200;
+		}
+		else
+			if (bBack || trainer_switch_pressed())
+			{
+			menu_beep();
+			break;
+			}
+			else
+				if (bUp)
+				{
+			menu_beep();
+			if (activeLineIndexMisc == 0)
+				activeLineIndexMisc = lineCount;
+			activeLineIndexMisc--;
+			waitTime = 150;
+				}
+				else
+					if (bDown)
+					{
+			menu_beep();
+			activeLineIndexMisc++;
+			if (activeLineIndexMisc == lineCount)
+				activeLineIndexMisc = 0;
+			waitTime = 150;
+					}
+	}
+}
+
 void process_misc_menu()
 {
 	const float lineWidth = 250.0;
@@ -1292,7 +1595,7 @@ int activeLineIndexMain = 0;
 void process_main_menu()
 {
 	const float lineWidth = 250.0;
-	const int lineCount = 7;	
+	const int lineCount = 8;	
 
 	std::string caption = "NATIVE  TRAINER  (AB)";
 
@@ -1303,7 +1606,8 @@ void process_main_menu()
 		"WORLD",
 		"TIME",
 		"WEATHER",
-		"MISC"
+		"MISC",
+		"LOAD IPLS"
 	};
 
 	DWORD waitTime = 150;
@@ -1353,6 +1657,9 @@ void process_main_menu()
 					break;
 				case 6:
 					process_misc_menu();
+					break;
+				case 7:
+					process_loc_menu();
 					break;
 			}
 			waitTime = 200;
